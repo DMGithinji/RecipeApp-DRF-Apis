@@ -1,10 +1,11 @@
 [![Build Status](https://travis-ci.org/DMGithinji/RecipeApp.svg?branch=master)](https://travis-ci.org/DMGithinji/RecipeApp)
 
-
-## RecipeAPI
+# RecipeAPI
 An API backend (built using Django Rest Framework) for an app that enables users to save their favourite recipes
 
-### Getting started
+
+
+## Getting started
 
 To start project, run:
 
@@ -18,6 +19,10 @@ To run tests within the project, run:
 docker-compose run app sh -c "python manage.py test && flake8"
 ```
 
-The API will then be available at http://127.0.0.1:8000
+The API will then be available at http://localhost:8000 and the documentation will be available using [Swagger](http://localhost:8000/swagger) or [Redoc](http://localhost:8000/redoc/)
 
-The API documentation will be available at http://127.0.0.1:8000/swagger or http://127.0.0.1:8000/redoc/
+
+### License and Copyright details
+
+* [MIT LICENSE](LICENSE)
+Copyright (c) 2020 **DMG**
