@@ -8,3 +8,5 @@ djangorestframework-simplejwt==4.4.0
 PyJWT==1.7.1
 
 flake8>=3.7.9,<3.8.0
+
+drf-yasg>=1.17.1,<1.18.0
