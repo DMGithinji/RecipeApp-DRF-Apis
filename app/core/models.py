@@ -43,6 +43,7 @@ class Tag(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        related_name='tags'
     )
     name = models.CharField(max_length=255)
 
@@ -55,6 +56,7 @@ class Ingredient(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        related_name='ingredients'
     )
     name = models.CharField(max_length=255)
 
