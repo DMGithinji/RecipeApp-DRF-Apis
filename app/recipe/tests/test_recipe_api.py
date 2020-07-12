@@ -7,7 +7,8 @@ from rest_framework.test import APIClient
 
 from core.models import Recipe, Tag, Ingredient
 
-from recipe.serializers import RecipeSerializer, RecipeDetailSerializer
+from recipe.serializers import RecipeSerializer, RecipeListSerializer,\
+                               RecipeDetailSerializer
 
 
 RECIPES_URL = reverse('recipe:recipe-list')
@@ -91,6 +92,16 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK),
         self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data, serializer.data)
+
+    def test_recipe_list_display_tag_name(self):
+        """Test recipe list view returns tags by name"""
+        recipe1 = sample_recipe(user=self.user)
+        tag = sample_tag(user=self.user, name='Pizza')
+        recipe1.tags.add(tag)
+
+        res = self.client.get(RECIPES_URL)
+        response_tag = res.data[0]['tags'][0]
+        self.assertEqual(response_tag, tag.name)
 
     def test_view_recipe_detail(self):
         """Test viewing a recipe's detail"""
@@ -190,3 +201,25 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(recipe.description, payload['description'])
         tags = recipe.tags.all()
         self.assertEqual(len(tags), 0)
+
+    def test_filter_recipes_by_tags(self):
+        """Test returning recipes with specific tags"""
+        recipe1 = sample_recipe(self.user, title='Milkshake')
+        recipe2 = sample_recipe(self.user, title='Coffee')
+        tag1 = sample_tag(self.user, name='Cold Beverages')
+        tag2 = sample_tag(self.user, name='Hot Beverages')
+        recipe1.tags.add(tag1)
+        recipe2.tags.add(tag2)
+        recipe3 = sample_recipe(self.user, title='Mutura')
+
+        res = self.client.get(
+            RECIPES_URL,
+            {'tags': f'{tag1.id},{tag2.id}'}
+        )
+
+        serializer1 = RecipeListSerializer(recipe1)
+        serializer2 = RecipeListSerializer(recipe2)
+        serializer3 = RecipeListSerializer(recipe3)
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)

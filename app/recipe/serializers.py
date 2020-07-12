@@ -44,6 +44,12 @@ class RecipeListSerializer(RecipeSerializer):
     ingredients = serializers.StringRelatedField(many=True)
     tags = serializers.StringRelatedField(many=True)
 
+    class Meta:
+        model = Recipe
+        fields = ('id', 'title', 'description', 'ingredients',
+                  'tags', 'time_minutes', 'link')
+        read_only_fields = ('id',)
+
 
 class RecipeDetailSerializer(RecipeSerializer):
     """Serialize a recipe detail"""
